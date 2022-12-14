@@ -5,7 +5,6 @@
 &nbsp;&nbsp;[![release](https://img.shields.io/github/v/release/ar51an/unbound-redis?display_name=release&logo=rstudio&color=90EE90&logoColor=8FBC8F)](https://github.com/ar51an/unbound-redis/releases/latest/)
 &nbsp;&nbsp;![downloads](https://img.shields.io/github/downloads/ar51an/unbound-redis/total?color=orange&label=downloads&logo=github)
 &nbsp;&nbsp;![visitors](https://shields-io-visitor-counter.herokuapp.com/badge?page=ar51an.unbound-redis&label=visitors&logo=github&color=4883c2)
-&nbsp;&nbsp;![license](https://img.shields.io/badge/license-MIT-CED8E1)
 &nbsp;&nbsp;![license](https://img.shields.io/github/license/ar51an/unbound-redis?color=CED8E1)
 </div>
 <div align="justify">
