@@ -27,7 +27,7 @@
 #### Specs:
 > |Unbound |OS                           |HW                      |
 > |:-------|:----------------------------|:-----------------------|
-> |`1.17.1`|`raspios-bullseye-arm64-lite`|`Raspberry Pi 4 Model B`|
+> |`1.19.0`|`raspios-bookworm-arm64-lite`|`Raspberry Pi 4 Model B`|
 
 #
 ### Steps
@@ -35,23 +35,12 @@
 #### ❯ Redis
 &nbsp;&nbsp;🔸 Install ➜ Config
 * **Install:**  
-  There are 2 options **either** install redis (6.0.16) from RaspiOS bullseye **or** install redis (7.0.*) from RaspiOS bullseye backports.
-  * Install redis **(6.0.16)** from raspios bullseye:
-    > `sudo apt install redis-server`  
-
-  * Install redis **(7.0.*)** from raspios bullseye backports:
-    > Enable backports. Edit sources list:  
-    > `sudo nano /etc/apt/sources.list`  
-    > Add backports source at the end:  
-    > `deb http://deb.debian.org/debian bullseye-backports main`  
-
-    > Install redis:  
-    > `sudo apt install redis-server/bullseye-backports`  
+    > `sudo apt install redis-server`
 
 * **Config:**  
   An optimized `redis.conf` for unbound is available in the release under `config` dir. Default _redis.conf_ from redis **7.0.*** is used as base config for the provided config. Some of the options may not be available or may be different if you are on an earlier version of redis. You can use _redis.conf_ **either** from the release **or** your preferred one.  
 
-  If you installed redis **7.0.*** and going to use the provided _redis.conf_, below steps can be helpful:
+  To use the provided _redis.conf_, below steps can be helpful:
   > Edit redis config:  
   > `sudo nano /etc/redis/redis.conf`  
   > Delete everything in default redis config:  
@@ -60,13 +49,6 @@
 
   > `ℹ️` **Note:**  
   > Provided `redis.conf` is tweaked after some thorough testing in small network. Like 8mb maxmeory has pretty optimal performance with enough cache and evict least recently used keys. Similarly sanpshotting is used to save keys to database, current option will save after 2hrs if atleast 100 new keys were added or after 12hrs if atleast 1 new key is added. Reboot will save database as long as snapshotting is enabled. Feel free to change them as preferred.
-
-* **Startup Warning:**  
-  For redis **7.0.*** from `backports`. Modify services to fix journal `⚠️` warning on redis startup.  
-  > Edit: `sudo nano /usr/lib/systemd/system/redis-server.service`  
-  > Edit: `sudo nano /usr/lib/systemd/system/redis-server@.service`  
-  > Remove/Comment lines starting with `NoExecPaths` and `ExecPaths` from both above services  
-  > Restart redis: `sudo systemctl restart redis-server`  
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/11185794/205388020-99c057ad-ee9d-440b-8df9-587f5c133f2e.png?raw=true" alt="divider"/>
@@ -81,9 +63,9 @@
   > ```
 
 * **Extract:**  
-  [Download](https://github.com/NLnetLabs/unbound/archive/refs/tags/release-1.17.1.tar.gz) and extract unbound.  
+  [Download](https://github.com/NLnetLabs/unbound/archive/refs/tags/release-1.19.0.tar.gz) and extract unbound.  
   > Extract:  
-  > `tar -xvzf unbound-release-1.17.1.tar.gz`
+  > `tar -xvzf unbound-release-1.19.0.tar.gz`
 
 * **CFLAGS:**  
   Remove debugging information, otherwise unbound binary size will be much larger.  
@@ -91,7 +73,7 @@
   > `export CFLAGS="-O2"`
 
   > `ℹ️` **Note:**  
-  > Unbound `1.17.1` binary size comparison:  
+  > Unbound binary size comparison:  
   > ![bookworm](https://user-images.githubusercontent.com/11185794/216804507-b019a32f-c0bc-44be-a6f6-23de274c0493.png) &nbsp;➟ _Debian Bookworm Prebuilt_ `Without Cachdb Module`  
   > ![debug-off](https://user-images.githubusercontent.com/11185794/216804539-a5ebcc20-27d0-4d6f-bf1e-b55c7d064fd0.png) &nbsp;➟ _Compiled Without Debug Info_ `With Cachdb Module`  
   > ![debug-on](https://user-images.githubusercontent.com/11185794/216804527-fa06ba09-2d51-4662-9fae-2cafa3a30721.png) &nbsp;➟ _Compiled With Debug Info_ `With Cachdb Module`
