@@ -243,6 +243,9 @@
 
 #
 #### ❯ `ℹ️` Tips & Notes
+* **Enable Redis Unix Socket:**
+
+  
 * **Resolver Configuration:**  
   Make sure `/etc/resolv.conf` has only RaspberryPi IP name servers. `NetworkManager` in RaspberryPi OS Bookworm will make this change automatically if your router's LAN DNS is pointing to Raspberry Pi IP.
   > `nameserver <RaspberryPi-IP>`
