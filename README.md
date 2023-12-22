@@ -17,6 +17,7 @@
 🔸 Redis backend database for `persistent` cache. Works as second level cache.  
 🔸 Network wide `Ads and Trackers` block. **No** pi-hole/adguard. **No** extra hop to resolve DNS.  
 🔸 Unbound `dashboard` is available at [unbound-dashboard](https://github.com/ar51an/unbound-dashboard). (_Optional_)
+🔸 Refer to `release.md` for changes.
 
 #### Prerequisite:
 * Unbound compilation and installation is validated on `RaspiOS/Debian`. `Post Install` startup service and scripts are reused from RaspiOS bullseye, they may require modification for other linux distributions.
@@ -48,7 +49,7 @@
   > Copy and paste the provided `redis.conf`. Save and exit nano  
 
   > `ℹ️` **Note:**  
-  > Provided `redis.conf` is tweaked after some thorough testing in small network. Like 8mb maxmeory has pretty optimal performance with enough cache and evict least recently used keys. Similarly sanpshotting is used to save keys to database, current option will save after 2hrs if atleast 100 new keys were added or after 12hrs if atleast 1 new key is added. Reboot will save database as long as snapshotting is enabled. Feel free to change them as preferred.
+  > Provided `redis.conf` is tweaked after some thorough testing in small network. Like 4mb maxmeory has pretty optimal performance with enough cache and evict least recently used keys. Similarly sanpshotting is used to save keys to database, current option will save after 2hrs if atleast 100 new keys were added or after 12hrs if atleast 1 new key is added. Reboot will save database as long as snapshotting is enabled. Feel free to change them as preferred.
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/11185794/205388020-99c057ad-ee9d-440b-8df9-587f5c133f2e.png?raw=true" alt="divider"/>
@@ -243,16 +244,16 @@
 #
 #### ❯ `ℹ️` Tips & Notes
 * **Resolver Configuration:**  
-  Make sure `/etc/resolv.conf` has only one name server.
-  > `nameserver <RaspberryPi-IP>` **or** `nameserver 127.0.0.1`
+  Make sure `/etc/resolv.conf` has only RaspberryPi IP name servers. `NetworkManager` in RaspberryPi OS Bookworm will make this change automatically if your router's LAN DNS is pointing to Raspberry Pi IP.
+  > `nameserver <RaspberryPi-IP>`
 
 * **Add LAN DNS:**  
   According to your router, change LAN DNS to Raspberry Pi IP. DNS setting under internet setup is WAN DNS, it is not same as LAN DNS. If router permits to change LAN DNS, it is usually under LAN setup.
 
 * **Troubleshoot Blocked Domain:**  
-  Below configuration logs only blocked domains, using that you can find domain causing the issue.
+  Below option logs blocked domains, using that you can find domain causing the issue.
   > Edit: `sudo nano unbound.conf`  
-  > Set: `verbosity: 1` and `log-local-actions: yes`  
+  > Set: `log-local-actions: yes`  
 
 * **Block Selective:**  
   Specific domains can be blocked for specific IPs with tag options. It works on top of existing ads and trackers block. Provided `unbound.conf` has selective block configuration commented out under `|Block|`. If interested uncomment it and replace the IPs and domains.
@@ -281,7 +282,4 @@
 
   After uninstall all the `Post Install` and `Timers & Services` steps can be easily reverted by running `post-remove.sh` provided in the release.
   > `sudo ./post-remove.sh`
-
-* **Update Unbound:**  
-  Refer `UPDATE.md` for updating Unbound.  
 </div>
