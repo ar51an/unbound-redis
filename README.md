@@ -59,7 +59,7 @@
   > Copy and paste the provided `redis.conf`. Save and exit nano  
 
   > `ℹ️` **Note:**  
-  > Provided `redis.conf` is tweaked after some thorough testing in small network. Like 8mb maxmeory has pretty optimal performance with enough cache and evict least recently used keys. Similarly sanpshotting is used to save keys to database, current option will save after 2hrs if atleast 100 new keys were added or after 12hrs if atleast 1 new key is added. Reboot will save database as long as snapshotting is enabled. Feel free to change them as preferred.
+  > Provided `redis.conf` is tweaked after some thorough testing in small network. Like 8mb maxmemory has pretty optimal performance with enough cache and evict least recently used keys. Similarly snapshotting is used to save keys to database, current option will save after 2hrs if atleast 100 new keys were added or after 12hrs if at least 1 new key is added. Reboot will save database as long as snapshotting is enabled. Feel free to change them as preferred.
 
 * **Startup Warning:**  
   For redis **7.0.*** from `backports`. Modify services to fix journal `⚠️` warning on redis startup.  
@@ -197,7 +197,7 @@
 
   > `ℹ️` **Note:**  
   > `/opt/unbound/scripts/update-blocklists.sh` script uses [StevenBlack's](https://github.com/StevenBlack/hosts) `unified hosts (adware + malware) + porn` as default list. It converts default list to unbound format, removes comments and sorts it.  
-  > You can add more lists to the _update-blocklists.sh_ script. With some basic expertise in sed you can aggregate multiple lists into unbound blocklist `unbound.block.conf`  
+  > You can add more lists to the _update-blocklists.sh_ script. With some basic expertise in `sed` you can aggregate multiple lists into unbound blocklist `unbound.block.conf`  
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/11185794/205388020-99c057ad-ee9d-440b-8df9-587f5c133f2e.png?raw=true" alt="divider"/>
