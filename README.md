@@ -17,7 +17,7 @@
 🔸 Redis backend database for `persistent` cache. Works as second level cache.  
 🔸 Network wide `Ads and Trackers` block. **No** pi-hole/adguard. **No** extra hop to resolve DNS.  
 🔸 Unbound `dashboard` is available at [unbound-dashboard](https://github.com/ar51an/unbound-dashboard). (_Optional_)  
-🔸 Refer to `release.md` for changes.
+🔸 Refer to `release.md` for changes and update.
 
 #### Prerequisite:
 * Unbound compilation and installation is validated on `RaspiOS/Debian`. `Post Install` startup service and scripts are reused from RaspiOS bullseye, they may require modification for other linux distributions.
