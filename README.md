@@ -16,7 +16,7 @@
 🔸 `Recursive` resolving from the root. **No** forwarding to other resolvers.  
 🔸 Redis backend database for `persistent` cache. Works as second level cache.  
 🔸 Network wide `Ads and Trackers` block. **No** pi-hole/adguard. **No** extra hop to resolve DNS.  
-🔸 Unbound `dashboard` is available at [unbound-dashboard](https://github.com/ar51an/unbound-dashboard). (_Optional_)
+🔸 Unbound `dashboard` is available at [unbound-dashboard](https://github.com/ar51an/unbound-dashboard). (_Optional_)  
 🔸 Refer to `release.md` for changes.
 
 #### Prerequisite:
