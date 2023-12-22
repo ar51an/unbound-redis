@@ -20,7 +20,7 @@
 🔸 Refer to `release.md` for changes and update.
 
 #### Prerequisite:
-* Unbound compilation and installation is validated on `RaspiOS/Debian`. `Post Install` startup service and scripts are reused from RaspiOS bullseye, they may require modification for other linux distributions.
+* Unbound compilation and installation is validated on `RaspberryPi OS/Debian`. `Post Install` startup service and scripts are reused from RaspberryPi OS Bookworm, they may require modification for other linux distributions.
 * If unbound package is installed. Take a backup of current `unbound.conf`. Remove unbound package completely:  
 
   > `sudo apt --purge autoremove unbound`
