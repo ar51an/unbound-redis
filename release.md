@@ -1,6 +1,6 @@
 #### Release Notes:
 * **1.2 Release:**  
-  v1.2 release includes RaspberryPi OS Bookworm related scripts and services changes. If you are on Bullseye use v1.1 release.
+  v1.2 release includes RaspberryPi OS Bookworm related scripts and service changes. If you are on Bullseye use v1.1 release.
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/11185794/205388020-99c057ad-ee9d-440b-8df9-587f5c133f2e.png?raw=true" alt="divider"/>
