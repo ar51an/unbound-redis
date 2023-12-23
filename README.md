@@ -243,9 +243,35 @@
 
 #
 #### ❯ `ℹ️` Tips & Notes
-* **Enable Redis Unix Socket:**
+* **Enable Redis Unix Socket:**  
+  Unbound **(1.18.0)** added the option to connect to redis server over unix socket. It has better throughput. Follow below steps to enable unix socket connection between unbound and redis:  
+  * Redis config:  
+    > Edit: `sudo nano /etc/redis/redis.conf`
 
-  
+    > Add options:  
+    > `unixsocket /var/run/redis/redis.sock`  
+    > `unixsocketperm 707`
+
+    > Restart redis:  
+    > `sudo systemctl restart redis-server`
+
+  * Unbound config:  
+    > Edit: `sudo nano /etc/unbound/unbound.conf`
+
+    > Modify under **`cachedb:`** tag:  
+    > > Add:  
+    > > `redis-server-path: "/var/run/redis/redis.sock"`  
+    > > Comment out:  
+    > > `#redis-server-host: 127.0.0.1`  
+    > > `#redis-server-port: 6379`
+
+    > Restart unbound:  
+    > `sudo systemctl restart unbound`
+
+  > `ℹ️` **Note:**  
+  > In order to use more restrictive option `unixsocketperm 770` in `redis.conf`, add unbound user to redis group.  
+  > Redis connectivity on TCP can be turned off with option `port 0` in redis.conf. When redis is not listening on TCP, specify socket path in cli cmds `redis-cli -s /var/run/redis/redis.sock`
+
 * **Resolver Configuration:**  
   Make sure `/etc/resolv.conf` has only RaspberryPi IP name servers. `NetworkManager` in RaspberryPi OS Bookworm will make this change automatically if your router's LAN DNS is pointing to Raspberry Pi IP.
   > `nameserver <RaspberryPi-IP>`
