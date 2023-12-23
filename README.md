@@ -20,7 +20,7 @@
 🔸 Refer to `release.md` for changes and update.
 
 #### Prerequisite:
-* Unbound compilation and installation is validated on `RaspberryPi OS/Debian`. `Post Install` startup service and scripts are reused from RaspberryPi OS Bookworm, they may require modification for other linux distributions.
+* Unbound compilation and installation is validated on `RaspberryPi OS/Debian`. `Post Install` startup service and scripts may require modification for other linux distributions.
 * If unbound package is installed. Take a backup of current `unbound.conf`. Remove unbound package completely:  
 
   > `sudo apt --purge autoremove unbound`
@@ -101,7 +101,7 @@
   > Run: `sudo ./post-install.sh`  
 
   > `ℹ️` **Note:**  
-  > Startup service and scripts are reused from unbound package in RaspiOS bullseye. `root.hints` is downloaded from `internic`, it will be automated through systemd timer.  
+  > Startup service and scripts are reused from unbound package in RaspberryPi OS Bookworm. `root.hints` is downloaded from `internic`, it will be automated through systemd timer.  
 * Alternatively, create user manually and use your preferred startup service and scripts.
 
 <div align="center">
