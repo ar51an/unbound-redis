@@ -16,10 +16,11 @@
 🔸 `Recursive` resolving from the root. **No** forwarding to other resolvers.  
 🔸 Redis backend database for `persistent` cache. Works as second level cache.  
 🔸 Network wide `Ads and Trackers` block. **No** pi-hole/adguard. **No** extra hop to resolve DNS.  
-🔸 Unbound `dashboard` is available at [unbound-dashboard](https://github.com/ar51an/unbound-dashboard). (_Optional_)
+🔸 Unbound `dashboard` is available at [unbound-dashboard](https://github.com/ar51an/unbound-dashboard). (_Optional_)  
+🔸 Refer to `release.md` for changes and update.
 
 #### Prerequisite:
-* Unbound compilation and installation is validated on `RaspiOS/Debian`. `Post Install` startup service and scripts are reused from RaspiOS bullseye, they may require modification for other linux distributions.
+* Unbound compilation and installation is validated on `RaspberryPi OS/Debian`. `Post Install` startup service and scripts may require modification for other linux distributions.
 * If unbound package is installed. Take a backup of current `unbound.conf`. Remove unbound package completely:  
 
   > `sudo apt --purge autoremove unbound`
@@ -27,7 +28,7 @@
 #### Specs:
 > |Unbound |OS                           |HW                      |
 > |:-------|:----------------------------|:-----------------------|
-> |`1.17.1`|`raspios-bullseye-arm64-lite`|`Raspberry Pi 4 Model B`|
+> |`1.19.0`|`raspios-bookworm-arm64-lite`|`Raspberry Pi 4 Model B`|
 
 #
 ### Steps
@@ -35,23 +36,12 @@
 #### ❯ Redis
 &nbsp;&nbsp;🔸 Install ➜ Config
 * **Install:**  
-  There are 2 options **either** install redis (6.0.16) from RaspiOS bullseye **or** install redis (7.0.*) from RaspiOS bullseye backports.
-  * Install redis **(6.0.16)** from raspios bullseye:
-    > `sudo apt install redis-server`  
-
-  * Install redis **(7.0.*)** from raspios bullseye backports:
-    > Enable backports. Edit sources list:  
-    > `sudo nano /etc/apt/sources.list`  
-    > Add backports source at the end:  
-    > `deb http://deb.debian.org/debian bullseye-backports main`  
-
-    > Install redis:  
-    > `sudo apt install redis-server/bullseye-backports`  
+    > `sudo apt install redis-server`
 
 * **Config:**  
   An optimized `redis.conf` for unbound is available in the release under `config` dir. Default _redis.conf_ from redis **7.0.*** is used as base config for the provided config. Some of the options may not be available or may be different if you are on an earlier version of redis. You can use _redis.conf_ **either** from the release **or** your preferred one.  
 
-  If you installed redis **7.0.*** and going to use the provided _redis.conf_, below steps can be helpful:
+  To use the provided _redis.conf_, below steps can be helpful:
   > Edit redis config:  
   > `sudo nano /etc/redis/redis.conf`  
   > Delete everything in default redis config:  
@@ -59,14 +49,7 @@
   > Copy and paste the provided `redis.conf`. Save and exit nano  
 
   > `ℹ️` **Note:**  
-  > Provided `redis.conf` is tweaked after some thorough testing in small network. Like 8mb maxmemory has pretty optimal performance with enough cache and evict least recently used keys. Similarly snapshotting is used to save keys to database, current option will save after 2hrs if atleast 100 new keys were added or after 12hrs if at least 1 new key is added. Reboot will save database as long as snapshotting is enabled. Feel free to change them as preferred.
-
-* **Startup Warning:**  
-  For redis **7.0.*** from `backports`. Modify services to fix journal `⚠️` warning on redis startup.  
-  > Edit: `sudo nano /usr/lib/systemd/system/redis-server.service`  
-  > Edit: `sudo nano /usr/lib/systemd/system/redis-server@.service`  
-  > Remove/Comment lines starting with `NoExecPaths` and `ExecPaths` from both above services  
-  > Restart redis: `sudo systemctl restart redis-server`  
+  > Provided `redis.conf` is tweaked after some thorough testing in small network. Like 4mb maxmemory has pretty optimal performance with enough cache and evict least recently used keys. Similarly snapshotting is used to save keys to database, current option will save after 2hrs if atleast 100 new keys were added or after 12hrs if at least 1 new key is added. Reboot will save database as long as snapshotting is enabled. Feel free to change them as preferred.
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/11185794/205388020-99c057ad-ee9d-440b-8df9-587f5c133f2e.png?raw=true" alt="divider"/>
@@ -81,9 +64,9 @@
   > ```
 
 * **Extract:**  
-  [Download](https://github.com/NLnetLabs/unbound/archive/refs/tags/release-1.17.1.tar.gz) and extract unbound.  
+  [Download](https://github.com/NLnetLabs/unbound/archive/refs/tags/release-1.19.0.tar.gz) and extract unbound.  
   > Extract:  
-  > `tar -xvzf unbound-release-1.17.1.tar.gz`
+  > `tar -xvzf unbound-release-1.19.0.tar.gz`
 
 * **CFLAGS:**  
   Remove debugging information, otherwise unbound binary size will be much larger.  
@@ -91,7 +74,7 @@
   > `export CFLAGS="-O2"`
 
   > `ℹ️` **Note:**  
-  > Unbound `1.17.1` binary size comparison:  
+  > Unbound binary size comparison:  
   > ![bookworm](https://user-images.githubusercontent.com/11185794/216804507-b019a32f-c0bc-44be-a6f6-23de274c0493.png) &nbsp;➟ _Debian Bookworm Prebuilt_ `Without Cachdb Module`  
   > ![debug-off](https://user-images.githubusercontent.com/11185794/216804539-a5ebcc20-27d0-4d6f-bf1e-b55c7d064fd0.png) &nbsp;➟ _Compiled Without Debug Info_ `With Cachdb Module`  
   > ![debug-on](https://user-images.githubusercontent.com/11185794/216804527-fa06ba09-2d51-4662-9fae-2cafa3a30721.png) &nbsp;➟ _Compiled With Debug Info_ `With Cachdb Module`
@@ -118,7 +101,7 @@
   > Run: `sudo ./post-install.sh`  
 
   > `ℹ️` **Note:**  
-  > Startup service and scripts are reused from unbound package in RaspiOS bullseye. `root.hints` is downloaded from `internic`, it will be automated through systemd timer.  
+  > Startup service and scripts are reused from unbound package in RaspberryPi OS Bookworm. `root.hints` is downloaded from `internic`, it will be automated through systemd timer.  
 * Alternatively, create user manually and use your preferred startup service and scripts.
 
 <div align="center">
@@ -260,17 +243,46 @@
 
 #
 #### ❯ `ℹ️` Tips & Notes
+* **Enable Redis Unix Socket:**  
+  Unbound **(1.18.0)** added the option to connect to redis server over unix socket. It has better throughput. Follow below steps to enable unix socket connection between unbound and redis:  
+  * Redis config:  
+    > Edit: `sudo nano /etc/redis/redis.conf`
+
+    > Add options:  
+    > `unixsocket /var/run/redis/redis.sock`  
+    > `unixsocketperm 707`
+
+    > Restart redis:  
+    > `sudo systemctl restart redis-server`
+
+  * Unbound config:  
+    > Edit: `sudo nano /etc/unbound/unbound.conf`
+
+    > Modify under **`cachedb:`** tag:  
+    > > Add:  
+    > > `redis-server-path: "/var/run/redis/redis.sock"`  
+    > > Comment out:  
+    > > `#redis-server-host: 127.0.0.1`  
+    > > `#redis-server-port: 6379`
+
+    > Restart unbound:  
+    > `sudo systemctl restart unbound`
+
+  > `ℹ️` **Note:**  
+  > In order to use more restrictive option `unixsocketperm 770` in `redis.conf`, add unbound user to redis group.  
+  > Redis connectivity on TCP can be turned off with option `port 0` in redis.conf. When redis is not listening on TCP, specify socket path in cli cmds `redis-cli -s /var/run/redis/redis.sock`
+
 * **Resolver Configuration:**  
-  Make sure `/etc/resolv.conf` has only one name server.
-  > `nameserver <RaspberryPi-IP>` **or** `nameserver 127.0.0.1`
+  Make sure `/etc/resolv.conf` has only RaspberryPi IP name servers. `NetworkManager` in RaspberryPi OS Bookworm will make this change automatically if your router's LAN DNS is pointing to Raspberry Pi IP.
+  > `nameserver <RaspberryPi-IP>`
 
 * **Add LAN DNS:**  
   According to your router, change LAN DNS to Raspberry Pi IP. DNS setting under internet setup is WAN DNS, it is not same as LAN DNS. If router permits to change LAN DNS, it is usually under LAN setup.
 
 * **Troubleshoot Blocked Domain:**  
-  Below configuration logs only blocked domains, using that you can find domain causing the issue.
+  Below option logs blocked domains, using that you can find domain causing the issue.
   > Edit: `sudo nano unbound.conf`  
-  > Set: `verbosity: 1` and `log-local-actions: yes`  
+  > Set: `log-local-actions: yes`  
 
 * **Block Selective:**  
   Specific domains can be blocked for specific IPs with tag options. It works on top of existing ads and trackers block. Provided `unbound.conf` has selective block configuration commented out under `|Block|`. If interested uncomment it and replace the IPs and domains.
@@ -299,7 +311,4 @@
 
   After uninstall all the `Post Install` and `Timers & Services` steps can be easily reverted by running `post-remove.sh` provided in the release.
   > `sudo ./post-remove.sh`
-
-* **Update Unbound:**  
-  Refer `UPDATE.md` for updating Unbound.  
 </div>
